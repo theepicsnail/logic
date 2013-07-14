@@ -43,6 +43,22 @@ function loadFinished() {
   loadingAnim.stop()
   loadingText.remove()
 
+  var toolbox = new Kinetic.Layer()
+  stage.add(toolbox)
+
+  var rect;
+  rect = new Kinetic.Rect({
+    x: 2,
+    y: 2,
+    width: 200,
+    height: 500,
+    fill: '#9d9',
+    stroke: 'black',
+    strokeWidth: 4
+  });
+  toolbox.add(rect);
+  
+
   var crops = {}
   var y = 0
   crops["NOT"] ={x:0, y:y, width:162, height:64}; y += 64; 
@@ -53,6 +69,22 @@ function loadFinished() {
   crops["XOR"] ={x:0, y:y, width:162, height:64}; y += 64; 
   crops["XNOR"]={x:0, y:y, width:162, height:64}; y += 64; 
   var gateImages = {};
+  var gates =  ["AND", "NAND", "OR", "NOR", "XOR", "XNOR", "NOT"]
+
+  for(var idx in gates){
+    newGate = function(idx) {
+      var gate = new Kinetic.Image({crop:crops[gates[idx]], image:gateImage, width:162, height:64, draggable:true, scale:.5});
+      gate.setPosition(idx%2*90+9, Math.floor(idx/2)*70+6)
+      toolbox.add(gate)
+      gate.on('dragstart', function(e){
+        newGate(idx)
+        gate.moveToTop()
+      })
+    }
+    newGate(idx)
+  }
+
+
 
   var b = new Kinetic.Bezier({
     startPoint:{x:0,y:0},
@@ -88,31 +120,6 @@ function loadFinished() {
     b.controlPoint2.x = b.endPoint.x - 100
     b.controlPoint2.y = b.endPoint.y 
   })
-
-
-  var rect;
-  rect = new Kinetic.Rect({
-    x: 239,
-    y: 75,
-    width: 100,
-    height: 50,
-    fill: 'green',
-    stroke: 'black',
-    strokeWidth: 4
-  });
-
-  layer.add(rect);
-  layer.draw()
-
-
-  /*
-  var i = new Kinetic.Image({image:imageObj, x:0, y:0})
-  layer.add(i)
-  /**/
-  layer.add(rect);
-
-  // add the layer to the stage
-
-  layer.draw()
+  stage.draw()
 }
 
