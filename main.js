@@ -84,6 +84,14 @@ function loadFinished() {
         gateInToolbox = false
         gate.moveToTop()
       })
+      gate.on('dragend', function(e){
+        if (e.x < 200)
+        {
+          var l = gate.getLayer()
+          gate.remove()
+          l.draw()
+        }
+      })
     }
     newGate(idx)
   }
