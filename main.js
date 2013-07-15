@@ -73,11 +73,15 @@ function loadFinished() {
 
   for(var idx in gates){
     newGate = function(idx) {
+      console.log("Created gate:" + gates[idx])
       var gate = new Kinetic.Image({crop:crops[gates[idx]], image:gateImage, width:162, height:64, draggable:true, scale:.5});
       gate.setPosition(idx%2*90+9, Math.floor(idx/2)*70+6)
       toolbox.add(gate)
+      var gateInToolbox = true;
       gate.on('dragstart', function(e){
-        newGate(idx)
+        if (gateInToolbox)
+          newGate(idx) //We're removing a gate from the toolbox, put a new one in there
+        gateInToolbox = false
         gate.moveToTop()
       })
     }
