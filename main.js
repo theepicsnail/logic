@@ -119,7 +119,6 @@ function buildToolbox() {
 
 function newGate(gateType) {
   var group = new Kinetic.Group({
-      draggable:true,
       name:gateType,
       id:"gate" + UID()})
   var src = gateImages[gateType]
@@ -132,6 +131,11 @@ function newGate(gateType) {
       crop:src.getCrop(),
       image:src.getImage(),
       scale:src.getScale(),
+      draggable:true,
+  })
+  gate.setDragBoundFunc( function(pos) {
+    group.setPosition(pos.x, pos.y)
+    return pos
   })
   gate.setPosition(0,0) 
   gate.on('dragend', function(e){
@@ -174,6 +178,12 @@ function newInput() {
     name:'input',
     id:'in' + UID()
   })
+
+  obj.on('mousedown', function(evt) {
+    evt.cancelBubble = true
+    console.log("This would start a new 'line' drag to 'output' objects")
+  })
+
   return obj
 }
 
@@ -184,6 +194,10 @@ function newOutput() {
     strokeWidth:2, stroke:'black', 
     name:'output',
     id:'out' + UID()
+  })
+  obj.on('mousedown', function(evt) {
+    evt.cancelBubble = true
+    console.log("This would start a new 'line' drag to 'input' objects")
   })
   return obj
 }
