@@ -1,4 +1,5 @@
 var stage, gateImages={};
+var workspace;
 window.onload = function () {
 
   stage = new Kinetic.Stage({
@@ -113,7 +114,7 @@ function buildToolbox() {
 
   stage.add(toolbox)
 
-  var workspace = new Kinetic.Layer()
+  workspace = new Kinetic.Layer()
   stage.add(workspace)
 }
 
@@ -146,12 +147,13 @@ function newGate(gateType) {
       l.draw()
     }
   })
+  group.gate = gate
   group.add(gate)
 
   var out = newOutput()
   out.setPosition(76,16)
   group.add(out)
-
+  newConnector(group, out)
 
   var in1 = newInput()
   group.add(in1)
@@ -195,27 +197,109 @@ function newOutput() {
     name:'output',
     id:'out' + UID()
   })
-  obj.on('mousedown', function(evt) {
-    evt.cancelBubble = true
-    console.log("This would start a new 'line' drag to 'input' objects")
-  })
   return obj
 }
+
+function newConnector(group, obj) {
+ 
+ obj.on('mousedown', function(evt) {
+    evt.cancelBubble = true
+    newActiveLine(group, obj)
+ })
+}
+
+function newActiveLine(group, obj) {
+    var targetName = "input"
+    if (obj.getName() == "input") 
+      targetName = "output"
+     
+    var line = 
+    new Kinetic.Line({
+//        startPoint : {x:obj.getX(), y:obj.getY()},
+//        endPoint : {x:obj.getX(), y:obj.getY()},
+      points:[obj, obj], 
+       stroke: 'blue',
+        strokeWidth: 5,
+        lineCap: 'round',
+        lineJoin: 'round'
+      });
+    group.add(line)
+
+    var dragPoint = new Kinetic.Circle({
+      radius:10, 
+      x:obj.getX(), y:obj.getY(), 
+      draggable:true,
+      strokeWidth:2, stroke:'black'})
+    line.setPoints([obj, dragPoint])
+
+    var overTarget = undefined;
+    var currentTargets = []
+    dragPoint.on('dragstart', function() {
+      console.log("start");
+      currentTargets = stage.get("." + targetName)
+      currentTargets.each(function (t){
+        t.setFill('green')
+      })
+    })
+    dragPoint.on('dragmove', function(pos) {
+      if (overTarget) 
+        overTarget.setFill("#DDD")
+
+      overTarget = undefined
+      currentTargets.each(function (target) {
+        var tp = target.getAbsolutePosition()
+        var cp = pos
+        var dx = tp.x - cp.x
+        var dy = tp.y - cp.y
+        if (dx*dx + dy*dy < 25)
+          overTarget = target
+      })
+      if (overTarget) 
+        overTarget.setFill("#DFD")
+      line.setPoints([obj.getPosition(), pos.targetNode.getPosition()])
+      line.draw()
+      return pos
+    })
+
+    dragPoint.on('dragend', function(){
+      if (overTarget) {
+        gate = overTarget.getParent().getChildren()[0]
+        gate.on('dragmove', function(pos) {
+          var tp = overTarget.getAbsolutePosition()
+          var cp = obj.getAbsolutePosition()
+          line.setPoints([obj.getPosition(),{
+            x:tp.x-cp.x+obj.getX(), 
+            y:tp.y-cp.y+obj.getY()}])
+        })
+        group.getChildren()[0].on('dragmove', function(pos){
+          var tp = overTarget.getAbsolutePosition()
+          var cp = obj.getAbsolutePosition()
+          line.setPoints([obj.getPosition(),{
+            x:tp.x-cp.x+obj.getX(), 
+            y:tp.y-cp.y+obj.getY()}])
+        })
+ 
+      } else {
+        line.remove()
+      }
+      currentTargets.each(function (t){
+        t.setFill('#DDD')
+      })
+      dragPoint.remove()
+      workspace.draw()
+    })
+ 
+    group.add(dragPoint)
+    dragPoint.startDrag()
+}
+
+
+
 
 nextID = 1
 function UID() {
   return nextID ++ 
 }
-
-
-
-
-
-
-
-
-
-
 
 
 function unused() {
