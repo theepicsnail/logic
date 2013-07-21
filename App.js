@@ -1,14 +1,24 @@
-define(["Kinetic", "Stage", "Toolbox"],
-function(K, S, T){
+define(["Kinetic", "Stage", "Toolbox", "Workspace", "ActiveLayer"],
+function(K, S, T, W, A){
 
+  /*
+  Load everything
+  Wire everything
+  */
   function load() {
+    W.load()
     T.load()
+    A.load()
+    T.setOnGateCreatedCallback(A.addAndDragGate)
+    A.setOnGateAdded(W.addGate)
   }
 
   function start() {
-    var layer = new K.Layer()
-    layer.add(T.getMainGroup())
-    S.add(layer)
+    //Bottom Layer
+    S.add(W.getLayer())
+    S.add(T.getLayer())
+    S.add(A.getLayer())
+    //Top layer
   }
 
 

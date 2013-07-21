@@ -1,6 +1,7 @@
-define(["Kinetic", "UI", "Resources"], function(K, UI, R){
-  var group;
-  var onSelectListener = function(e) {
+define(["Kinetic", "UI", "Resources", "Gates"], 
+function(K,         UI,   R,           Gates){
+  var group, layer;
+  var onGateCreated = function(e) {
     console.log(e)
   }
 
@@ -25,6 +26,8 @@ define(["Kinetic", "UI", "Resources"], function(K, UI, R){
       var gate = R.newImage(R.gates[i])
       addGateToToolbox(gate, x, y);
     }
+    layer = new K.Layer()
+    layer.add(group)
   }
   function addGateToToolbox(gate, x, y) {
     //Add the gate to the group
@@ -32,14 +35,18 @@ define(["Kinetic", "UI", "Resources"], function(K, UI, R){
     gate.on('mousedown', function(e){
       e.bubbles= false
       e.cancelBubble = true
-      if (onSelectListener) 
-        onSelectListener(gate.getName())
+      
+      if (onGateCreated) {
+        g = Gates.newGate(gate.getName())
+        g.setPosition(gate.getAbsolutePosition())
+        onGateCreated(g)
+      }
     })
     group.add(gate)
   }
   return {
     load: load,
-    getMainGroup: function(){ return group },
-    setOnSelectListener: function(cb){ onSelectListener = cb },
+    getLayer: function(){ return layer },
+    setOnGateCreatedCallback: function(cb){ onGateCreated = cb },
   }
 })
