@@ -1,5 +1,5 @@
-define(["Gates", "Kinetic", "UI"], 
-function(Gates,   K,         UI) {
+define(["Gates", "Kinetic", "UI", "Connection"], 
+function(Gates,   K,         UI,   C) {
   var layer;
   function onGateAdded(g) {
     console.log("Added", g)
@@ -25,12 +25,10 @@ function(Gates,   K,         UI) {
   }
 
   function anchorStart(anchor) {
-    var pts = [anchor.getAbsolutePosition(), anchor.getAbsolutePosition()]
-    var line = new K.Line({
-      points:pts,
-      stroke:'black', strokeWidth:3
-    })
-    layer.add(line)
+    var c = new C()
+    layer.add(c)
+    c.setInPoint(anchor.getAbsolutePosition())
+    c.setOutPoint(anchor.getAbsolutePosition())
 
     var dragAnchor = new K.Circle(UI.DragAnchor)
     dragAnchor.setPosition(anchor.getAbsolutePosition())
@@ -38,15 +36,13 @@ function(Gates,   K,         UI) {
     dragAnchor.setDraggable(true)
     dragAnchor.startDrag()
     dragAnchor.on('dragmove', function(evt) {
-      pts[1] = evt
-      line.setPoints(pts)
+      c.setInPoint(evt)
       layer.draw()
-      LINE= line
     })
     dragAnchor.on('dragend', function(evt) {
       dragAnchor.destroy()
-      line.remove()
-      addOrDestroyConnection(line) 
+      c.remove()
+      addOrDestroyConnection(c) 
       layer.draw()
     })
     

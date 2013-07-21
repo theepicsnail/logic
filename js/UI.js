@@ -16,5 +16,9 @@ define({
     radius:7,
     stroke:'black',
     strokeWidth:2
+  },
+  Connection:{
+    stroke:'blue',
+    strokeWidth:2,
   }
 })
