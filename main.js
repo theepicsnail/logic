@@ -119,7 +119,9 @@ function buildToolbox() {
 
 function newGate(gateType) {
   var group = new Kinetic.Group({
-      draggable:true})
+      draggable:true,
+      name:gateType,
+      id:"gate" + UID()})
   var src = gateImages[gateType]
   //return src
   var gate = new Kinetic.Image({
@@ -150,7 +152,8 @@ function newGate(gateType) {
   var in1 = newInput()
   group.add(in1)
   if (gateType == "NOT") {
-    in1.setPositon(4,17)
+    in1.setPosition(4,17)
+
   } else {
     in1.setPosition(4,10)
 
@@ -159,21 +162,35 @@ function newGate(gateType) {
     group.add(in2)
   }
 
+  lastGate = group
   return group
 }
 
 function newInput() {
   var obj = new Kinetic.Circle({
-    radius:5, fill:'#DDD', strokeWidth:2, stroke:'black'
+    radius:5, 
+    fill:'#DDD', 
+    strokeWidth:2, stroke:'black', 
+    name:'input',
+    id:'in' + UID()
   })
   return obj
 }
 
 function newOutput() {
   var obj = new Kinetic.Circle({
-    radius:5, fill:'#DDD', strokeWidth:2, stroke:'black'
+    radius:5, 
+    fill:'#DDD', 
+    strokeWidth:2, stroke:'black', 
+    name:'output',
+    id:'out' + UID()
   })
   return obj
+}
+
+nextID = 1
+function UID() {
+  return nextID ++ 
 }
 
 
