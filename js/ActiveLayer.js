@@ -13,11 +13,16 @@ function(Gates,   K) {
     layer.add(gate)
     gate.setDraggable(true)
     gate.startDrag()
+    gate.setOnAnchorConnectionStart(anchorStart)
     gate.on('dragend', function(evt) {
       gate.remove()    
       onGateAdded(gate)
       layer.draw()
     })
+  }
+
+  function anchorStart(anchor) {
+    console.log("Anchor start", anchor)
   }
 
   return {

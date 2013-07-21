@@ -33,16 +33,16 @@ define(["Kinetic", "Resources", "UI", "UID"], function(K, R, UI, UID) {
       in1.setPosition(4,17)
     } else {
       in1.setPosition(4,10)
-
       var in2 = newAnchor("in")
       gateGroup.add(in2)
       in2.setPosition(4,25)
-    }    
+    }
+    gateGroup.setOnAnchorConnectionStart = function(cb) { 
+      anchorConnectionStart = cb;
+    }
+
     return gateGroup
   }
 
-  public.setOnAnchorConnectionStart = function(cb) {
-    anchorConnectionStart = cb;
-  }
   return public;
 });
