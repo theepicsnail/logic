@@ -1,4 +1,4 @@
-define(["Kinetic"], function(K) {
+define(["Kinetic", "UID"], function(K, UID) {
   //Same order as gates.png
   var gateNames = ["NOT", "AND", "NAND", "OR", "NOR", "XOR", "XNOR"]  
   var gateImage = new Image();
@@ -35,6 +35,8 @@ define(["Kinetic"], function(K) {
       crop: img.getCrop(),
       width: 81,
       height:32,
+      name: gateName,
+      id: "gate" + UID.next()
     })
   }
 
