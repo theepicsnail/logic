@@ -9,13 +9,13 @@ function(Gates,   K) {
     layer = new K.Layer()
     layer.setOpacity(.7)
   }
-  function addAndDrag(gateType) {
-    layer.add(g)
-    g.setDraggable(true)
-    g.startDrag()
-    g.on('dragend', function(evt) {
-      g.remove()    
-      onGateAdded(g)
+  function addAndDrag(gate) {
+    layer.add(gate)
+    gate.setDraggable(true)
+    gate.startDrag()
+    gate.on('dragend', function(evt) {
+      gate.remove()    
+      onGateAdded(gate)
       layer.draw()
     })
   }
