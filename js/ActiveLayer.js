@@ -4,6 +4,9 @@ function(Gates,   K,         UI) {
   function onGateAdded(g) {
     console.log("Added", g)
   }
+  function addOrDestroyConnection(conn) {
+    console.log("Add or destroy:", conn)
+  }
 
   function load() {
     layer = new K.Layer()
@@ -22,7 +25,6 @@ function(Gates,   K,         UI) {
   }
 
   function anchorStart(anchor) {
-    console.log("Anchor start", anchor)
     var pts = [anchor.getAbsolutePosition(), anchor.getAbsolutePosition()]
     var line = new K.Line({
       points:pts,
@@ -43,7 +45,9 @@ function(Gates,   K,         UI) {
     })
     dragAnchor.on('dragend', function(evt) {
       dragAnchor.destroy()
-      layer.draw() 
+      line.remove()
+      addOrDestroyConnection(line) 
+      layer.draw()
     })
     
   }
@@ -52,6 +56,7 @@ function(Gates,   K,         UI) {
     load:load,
     addAndDragGate:addAndDrag,
     getLayer: function(){ return layer},
-    setOnGateAdded: function(cb) { onGateAdded = cb } 
+    setOnGateAdded: function(cb) { onGateAdded = cb },
+    setOnAddOrDestroyConnection: function(cb) { addOrDestroyConnection = cb },
   } 
 });

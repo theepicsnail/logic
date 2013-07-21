@@ -9,10 +9,14 @@ define(["Kinetic"], function(K) {
     layer.draw()
   }
 
+  function addOrDestroyConnection(conn) {
+    console.log(conn)
+  }
 
   return {
     load: load, 
     getLayer: function() {return layer}, 
     addGate: addGate,
+    addOrDestroyConnection: addOrDestroyConnection
   }
 });

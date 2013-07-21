@@ -11,6 +11,7 @@ function(K, S, T, W, A){
     A.load()
     T.setOnGateCreatedCallback(A.addAndDragGate)
     A.setOnGateAdded(W.addGate)
+    A.setOnAddOrDestroyConnection(W.addOrDestroyConnection)
   }
 
   function start() {
