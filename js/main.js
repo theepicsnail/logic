@@ -1,3 +1,7 @@
+require.config({
+  vaseUrl: "/js"
+})
+
 require(["LoadingScreen", "Resources", "App"], 
 function( LoadingScreen,   Resources,   App){
   LoadingScreen.start()
