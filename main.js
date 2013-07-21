@@ -142,48 +142,51 @@ function newGate(gateType) {
   })
   group.add(gate)
 
-  var out = new Kinetic.Circle({
-    x:76, y:16, radius:5, fill:'black', strokeWidth:2, stroke:'black'
-  })
+  var out = newOutput()
+  out.setPosition(76,16)
   group.add(out)
 
-  var in1 = new Kinetic.Circle({
-    x:4, y:10, radius:5, fill:'blue', strokeWidth:2, stroke:'black'
-  })
+
+  var in1 = newInput()
   group.add(in1)
   if (gateType == "NOT") {
-    in1.setY(17)
+    in1.setPositon(4,17)
   } else {
-    var in2 = new Kinetic.Circle({
-      x:4, y:25, radius:5, fill:'red', strokeWidth:2, stroke:'black'
-    })
+    in1.setPosition(4,10)
+
+    var in2 = newInput()
+    in2.setPosition(4, 25)
     group.add(in2)
   }
+
   return group
 }
 
-/*  
-  for(var idx in gates){
-    newGate = function(idx) {
-      console.log("Created gate:" + gates[idx])
-      var gate = new Kinetic.Image({crop:configs[gates[idx]], 
-          width:162, height:64, draggable:true, scale:.5});
-      gate.setPosition(idx%2*90+9, Math.floor(idx/2)*70+6)
-      toolbox.add(gate)
-      var gateInToolbox = true;
-      gate.on('dragstart', function(e){
-        if (gateInToolbox)
-          //We're removing a gate from the toolbox, put a new one in there
-          newGate(idx) 
+function newInput() {
+  var obj = new Kinetic.Circle({
+    radius:5, fill:'#DDD', strokeWidth:2, stroke:'black'
+  })
+  return obj
+}
 
-        gateInToolbox = false
-        gate.moveToTop()
-      })
-     }
-    newGate(idx)
-  }
+function newOutput() {
+  var obj = new Kinetic.Circle({
+    radius:5, fill:'#DDD', strokeWidth:2, stroke:'black'
+  })
+  return obj
+}
 
-*/
+
+
+
+
+
+
+
+
+
+
+
 function unused() {
   var b = new Kinetic.Bezier({
     startPoint:{x:0,y:0},
