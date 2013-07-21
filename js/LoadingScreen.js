@@ -30,7 +30,7 @@ define(["Stage", "Kinetic"], function (Stage, K) {
 
   function stopLoading() {
     loadingAnim.stop();
-    layer.remove()
+    layer.destroy()
   }
 
   return {

@@ -42,7 +42,7 @@ function(Gates,   K,         UI) {
       LINE= line
     })
     dragAnchor.on('dragend', function(evt) {
-      dragAnchor.remove()
+      dragAnchor.destroy()
       layer.draw() 
     })
     
