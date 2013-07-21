@@ -1,6 +1,9 @@
-require(["LoadingScreen"], function(LoadingScreen){
+require(["LoadingScreen", "Resources", "App"], 
+function( LoadingScreen,   Resources,   App){
   LoadingScreen.start()
-
-  setTimeout(LoadingScreen.stop, 3000)
+  Resources.load(function() {
+    LoadingScreen.stop()
+    App.start()
+  })
 });
 
