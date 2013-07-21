@@ -11,5 +11,10 @@ define({
     stroke:'black',
     strokeWidth:2,
     fill:'#DDD'
+  },
+  DragAnchor:{
+    radius:7,
+    stroke:'black',
+    strokeWidth:2
   }
 })
