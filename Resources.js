@@ -41,5 +41,6 @@ define(["Kinetic"], function(K) {
   return {
     load: loadResources,
     newImage: getNewImage,
+    gates: gateNames,
   }
 })
