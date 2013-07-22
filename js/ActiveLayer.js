@@ -16,7 +16,6 @@ function(Gates,   K,         UI,   C) {
     layer.add(gate)
     gate.setDraggable(true)
     gate.startDrag()
-    gate.setOnAnchorConnectionStart(anchorStart)
     gate.on('dragend', function(evt) {
       gate.remove()    
       onGateAdded(gate)
@@ -49,6 +48,7 @@ function(Gates,   K,         UI,   C) {
   }
 
   return {
+    anchorStart: anchorStart,
     load:load,
     addAndDragGate:addAndDrag,
     getLayer: function(){ return layer},

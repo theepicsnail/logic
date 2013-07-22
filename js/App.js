@@ -1,5 +1,5 @@
-define(["Kinetic", "Stage", "Toolbox", "Workspace", "ActiveLayer"],
-function(K, S, T, W, A){
+define(["Kinetic", "Stage", "Toolbox", "Workspace", "ActiveLayer", "Anchor"],
+function(K, S, T, W, A, Anchor){
 
   /*
   Load everything
@@ -12,6 +12,7 @@ function(K, S, T, W, A){
     T.setOnGateCreatedCallback(A.addAndDragGate)
     A.setOnGateAdded(W.addGate)
     A.setOnAddOrDestroyConnection(W.addOrDestroyConnection)
+    Anchor.prototype.anchorConnectionStart = A.anchorStart
   }
 
   function start() {
