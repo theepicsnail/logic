@@ -1,3 +1,7 @@
+/*
+ * Main launcher, called from require.js and the index.html, this starts
+ * off the loading process, and upon load complete, launches the app.
+ */
 require.config({
   vaseUrl: "/js"
 })

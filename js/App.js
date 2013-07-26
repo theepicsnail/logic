@@ -1,9 +1,12 @@
+/*
+ * App serves as the hub that connects each of the pieces
+ */
 define(["Kinetic", "Stage", "Toolbox", "Workspace", "ActiveLayer", "Anchor"],
 function(K, S, T, W, A, Anchor){
 
   /*
-  Load everything
-  Wire everything
+   * Loading the App causes each of the pieces to get loaded
+   * once loaded, all of the overrides are applied to connection functionality
   */
   function load() {
     W.load()
@@ -15,6 +18,10 @@ function(K, S, T, W, A, Anchor){
     Anchor.prototype.anchorConnectionStart = A.anchorStart
   }
 
+  /*
+   * starting the App adds each of the layers to the stage
+   * 
+   */
   function start() {
     //Bottom Layer
     S.add(W.getLayer())
@@ -23,7 +30,9 @@ function(K, S, T, W, A, Anchor){
     //Top layer
   }
 
-
+  /*
+   * public exports
+   */
   return {
     load: load,
     start:start
