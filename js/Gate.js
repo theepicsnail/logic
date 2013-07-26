@@ -5,15 +5,12 @@
  * Gates have a set of inputs and a set of outputs in the more general case.
  * Currently these have 1 or 2 inputs (depending on type), and one output.
  * 
- * TODO: this is currently using 'public' ... BAD!
  */
 define(["Kinetic", "Resources", "UI", "UID", "Anchor"], 
 function(K,         R,           UI,   UID,   Anchor) {
-  //the 'public' object is exported
-  public = {}
   
   /*
-   * newGate constructs a new gate from the given type type is a string that 
+   * constructs a new gate from the given type type is a string that 
    * lines up with one of the names of gates in Resource.js
    * "AND", "XOR", "NOT", etc...
    *
@@ -21,7 +18,7 @@ function(K,         R,           UI,   UID,   Anchor) {
    * bottom, and the anchors above it.
    *
    */
-  public.newGate = function(type) {
+  return function(type) {
     var gateGroup = new K.Group()
     gateGroup.add(R.newImage(type))
     
@@ -43,6 +40,4 @@ function(K,         R,           UI,   UID,   Anchor) {
 
     return gateGroup
   }
-
-  return public;
 });

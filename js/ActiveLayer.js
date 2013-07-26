@@ -3,8 +3,8 @@
  * layer hold any gate, connection, or group that is currently being held by the
  * user. (e.g. via mouse drag). 
  */
-define(["Gates", "Kinetic", "UI", "Connection"], 
-function(Gates,   K,         UI,   C) {
+define(["Kinetic", "UI", "Connection"], 
+function(K,         UI,   C) {
 
   //Kineticjs layer that stores the active group
   var layer;

@@ -7,8 +7,8 @@
  * dragging. That gate is picked up (dragging started). Then it is added to
  * the active layer, who deals with it from there.
  */
-define(["Kinetic", "UI", "Resources", "Gates"], 
-function(K,         UI,   R,           Gates){
+define(["Kinetic", "UI", "Resources", "Gate"], 
+function(K,         UI,   R,           Gate){
   var group, layer;
 
   /*
@@ -73,7 +73,7 @@ function(K,         UI,   R,           Gates){
       e.cancelBubble = true
       
       if (onGateCreated) {
-        g = Gates.newGate(gate.getName())
+        g = new Gate(gate.getName())
         g.setPosition(gate.getAbsolutePosition())
         onGateCreated(g) //To the active layer!
       }
