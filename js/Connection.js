@@ -14,64 +14,61 @@
 define(["Kinetic", "UI"], function(Kinetic,UI){
 
   //Constructor
-  Kinetic.Connection = function() {
-    this._initConnection(UI.Connection);
-  };
-
-  Kinetic.Connection.prototype = {
-    //Constructor implementation
-    _initConnection: function(config) {
+  var Connection = function() {
       this.endPoints = [undefined, undefined]//out -> in
       this.points=[[0,0],[0,0]]
+      config = UI.Connection
       config.points = this.points
       Kinetic.Line.call(this, config);
-    },
+  }
   
-    /*
-     * Anchor based mutators
-     */
-    setOutAnchor: function(anchor) { 
-      this.endPoints[0] = anchor
-      anchor.connections.push(this)
-      var p = anchor.getAbsolutePosition()
-      this.points[0] = [p.x, p.y]
-    },
-    setToAnchor: function(anchor) { 
-      this.endPoints[1] = anchor
-      anchor.connections.push(this)
-      var p = anchor.getAbsolutePosition()
-      this.points[1] = [p.x, p.y]
-    },
+  Connection.prototype.setOutAnchor =
+  function(anchor) {
+    this.endPoints[0] = anchor
+    this.onAnchorMove(anchor)
+    anchor.addConnection(this)
+  }
 
-    /*
-     * Point based mutators
-     * The getters are used when a connection is being placed, this lets the 
-     * workspace detect which point this connection should anchor to.
-     */
-    setOutPoint: function(p) {
-      this.points[0] = [p.x, p.y]
-      this.setPoints(this.points)
-    },
-    setInPoint: function(p) {
-      this.points[1] = [p.x, p.y]
-      this.setPoints(this.points)
-    },
-    getOutPoint: function() {
-      return this.points[0]
-    },
-    getInPoint: function() {
-      return this.points[1]
-    },
-    onAnchorMove: function(anchor) {
-      console.log("Connection detected anchor move:", anchor)
-      if(anchor == this.endPoints[0]) {
-        this.setOutPoint(anchor.getAbsolutePosition())
-      } else if (anchor == this.endPoints[1]) {
-        this.setInPoint(anchor.getAbsolutePosition())
-      }
+  Connection.prototype.setToAnchor =
+  function(anchor) {
+    this.endPoints[1] = anchor
+    this.onAnchorMove(anchor)
+    anchor.addConnection(this)
+  }
+
+  Connection.prototype.onAnchorMove =
+  function(anchor) {
+    if (anchor == this.endPoints[0]) {
+      this.setOutPoint(anchor.getAbsolutePosition())
+    } else if (anchor == this.endPoints[1]) {
+      this.setInPoint(anchor.getAbsolutePosition())
+    } else {
+      console.error("bad anchor move on connection", this, anchor)
     }
-    };
+  }
 
-  Kinetic.Util.extend(Kinetic.Connection, Kinetic.Line);
-  return Kinetic.Connection
+  Connection.prototype.setOutPoint =
+  function(p) {
+    this.points[0] = [p.x, p.y]
+    this.setPoints(this.points)
+  }
+
+  Connection.prototype.setInPoint =
+  function(p) {
+    this.points[1] = [p.x, p.y]
+    this.setPoints(this.points)
+  }
+ 
+  Connection.prototype.getOutPoint =
+  function() {
+    return this.points[0]
+  }
+  
+  Connection.prototype.getInPoint = 
+  function() {
+    return this.points[1]
+  }
+
+  Kinetic.Util.extend(Connection, Kinetic.Line);
+  return Connection
 })

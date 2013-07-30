@@ -21,6 +21,11 @@ define(["Kinetic","UI", "UID"], function(Kinetic, UI, UID) {
     })
   }
 
+  Anchor.prototype.addConnection =
+  function(conn) {
+    this.connections.push(conn)
+  }
+
   Anchor.prototype.anchorConnectionStart = 
   function(anchor) {
   }
