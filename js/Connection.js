@@ -72,8 +72,10 @@ define(["Kinetic", "UI"], function(Kinetic,UI){
   Connection.prototype.destroy =
   function() {
     Kinetic.Line.prototype.destroy.call(this)
-    this.endPoints[0].removeConnection(this)
-    this.endPoints[1].removeConnection(this)
+    if(this.endPoints[0])
+      this.endPoints[0].removeConnection(this)
+    if(this.endPoints[1])
+      this.endPoints[1].removeConnection(this)
   }
 
   Kinetic.Util.extend(Connection, Kinetic.Line);
