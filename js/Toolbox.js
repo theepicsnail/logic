@@ -73,7 +73,7 @@ function(K,         UI,   R,           Gate){
       e.cancelBubble = true
       
       if (onGateCreated) {
-        g = new Gate(gate.getName())
+        g = Gate[gate.getName()]()
         g.setPosition(gate.getAbsolutePosition())
         onGateCreated(g) //To the active layer!
       }
@@ -89,4 +89,5 @@ function(K,         UI,   R,           Gate){
     getLayer: function(){ return layer },
     setOnGateCreatedCallback: function(cb){ onGateCreated = cb },
   }
+q
 })
