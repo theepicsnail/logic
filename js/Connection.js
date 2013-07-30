@@ -21,6 +21,7 @@ define(["Kinetic", "UI"], function(Kinetic,UI){
   Kinetic.Connection.prototype = {
     //Constructor implementation
     _initConnection: function(config) {
+      this.endPoints = [undefined, undefined]//out -> in
       this.points=[[0,0],[0,0]]
       config.points = this.points
       Kinetic.Line.call(this, config);
@@ -30,24 +31,16 @@ define(["Kinetic", "UI"], function(Kinetic,UI){
      * Anchor based mutators
      */
     setOutAnchor: function(anchor) { 
+      this.endPoints[0] = anchor
+      anchor.connections.push(this)
       var p = anchor.getAbsolutePosition()
       this.points[0] = [p.x, p.y]
-      var self = this
-      anchor.getParent().on('dragmove', function(e) {
-        var p = anchor.getAbsolutePosition()
-        self.points[0] = [p.x, p.y]
-        self.setPoints(self.points)
-      })
     },
     setToAnchor: function(anchor) { 
+      this.endPoints[1] = anchor
+      anchor.connections.push(this)
       var p = anchor.getAbsolutePosition()
       this.points[1] = [p.x, p.y]
-      var self = this
-      anchor.getParent().on('dragmove', function(e) {
-        var p = anchor.getAbsolutePosition()
-        self.points[1] = [p.x, p.y]
-        self.setPoints(self.points)
-      })
     },
 
     /*
@@ -69,6 +62,14 @@ define(["Kinetic", "UI"], function(Kinetic,UI){
     getInPoint: function() {
       return this.points[1]
     },
+    onAnchorMove: function(anchor) {
+      console.log("Connection detected anchor move:", anchor)
+      if(anchor == this.endPoints[0]) {
+        this.setOutPoint(anchor.getAbsolutePosition())
+      } else if (anchor == this.endPoints[1]) {
+        this.setInPoint(anchor.getAbsolutePosition())
+      }
+    }
     };
 
   Kinetic.Util.extend(Kinetic.Connection, Kinetic.Line);

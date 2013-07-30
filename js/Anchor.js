@@ -9,6 +9,7 @@ define(["Kinetic","UI", "UID"], function(Kinetic, UI, UID) {
 
   Anchor = function(direction) {
     Kinetic.Circle.call(this, UI.Anchor)
+    this.connections = []
     this.direction = direction
     this.setName(direction)
     this.setId(name + UID.next())
@@ -22,7 +23,13 @@ define(["Kinetic","UI", "UID"], function(Kinetic, UI, UID) {
 
   Anchor.prototype.anchorConnectionStart = 
   function(anchor) {
-    
+  }
+
+  Anchor.prototype.onParentMove =
+  function() {
+    for (var i in this.connections) {
+      this.connections[i].onAnchorMove(this)
+    }
   }
 
   //Extend Kinetic.Circle

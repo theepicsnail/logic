@@ -26,7 +26,21 @@ function(K,         R,           UI,   UID,   Anchor) {
     anchor.setPosition(76,16)
     this.outputs[0] = anchor
     this.add(anchor)
-  };  
+
+    var self = this;
+    this.on('dragmove', function(evt) {self.onMove(evt)})
+  };
+
+  Gate.prototype.onMove =
+  function(evt) {
+    for(var i in this.inputs) {
+      this.inputs[i].onParentMove()
+    }
+    for(var i in this.outputs) {
+      this.outputs[i].onParentMove()
+    }
+  }
+  
   Kinetic.Util.extend(Gate, Kinetic.Group);
 
   return {
