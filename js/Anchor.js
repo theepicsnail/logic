@@ -23,7 +23,14 @@ define(["Kinetic","UI", "UID"], function(Kinetic, UI, UID) {
 
   Anchor.prototype.addConnection =
   function(conn) {
+    if (this.direction == "in" && this.connections[0]) 
+      this.connections.pop().destroy()
     this.connections.push(conn)
+  }
+
+  Anchor.prototype.removeConnection =
+  function(conn) {
+    removeA(this.connections,conn)
   }
 
   Anchor.prototype.anchorConnectionStart = 
