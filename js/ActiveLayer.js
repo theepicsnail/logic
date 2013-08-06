@@ -1,10 +1,12 @@
+/*global define*/
+
 /*
  * Active layer is a singleton that exports some manipulator methods. The active
  * layer hold any gate, connection, or group that is currently being held by the
  * user. (e.g. via mouse drag). 
  */
-define(["Kinetic", "UI", "Connection"], 
-function(K,         UI,   C) {
+define(["Kinetic", "UI", "Connection"], function (K, UI, Connection) {
+  "use strict";
 
   //Kineticjs layer that stores the active group
   var layer;
@@ -13,14 +15,14 @@ function(K,         UI,   C) {
    * See: Workspace.js:addGate
    */
   function onGateAdded(g) {
-    console.log("Added", g)
+    console.log("Added", g);
   }
 
   /*
    * See: Workspace.js:addOrDestroyConnection
    */
   function addOrDestroyConnection(conn) {
-    console.log("Add or destroy:", conn)
+    console.log("Add or destroy:", conn);
   }
 
   /*
@@ -28,8 +30,8 @@ function(K,         UI,   C) {
    * The active layer has minimal initialization, as by default it's empty.
    */
   function load() {
-    layer = new K.Layer()
-    layer.setOpacity(.7)
+    layer = new K.Layer();
+    layer.setOpacity(0.7);
   }
 
   /*
@@ -42,14 +44,15 @@ function(K,         UI,   C) {
    *
    */
   function addAndDrag(gate) {
-    layer.add(gate)
-    gate.setDraggable(true)
-    gate.startDrag()
-    gate.on('dragend', function(evt) {
-      gate.remove()    
-      onGateAdded(gate)
-      layer.draw()
-    })
+    layer.add(gate);
+    gate.setDraggable(true);
+    gate.startDrag();
+    gate.on('dragend',
+      function (evt) {
+        gate.remove();
+        onGateAdded(gate);
+        layer.draw();
+      });
   }
 
   /*
@@ -58,26 +61,26 @@ function(K,         UI,   C) {
    * sent to the workspace to be added or destroyed.
    */
   function anchorStart(anchor) {
-    var c = new C()
-    layer.add(c)
-    c.setInPoint(anchor.getAbsolutePosition())
-    c.setOutPoint(anchor.getAbsolutePosition())
+    var c = new Connection(),
+      dragAnchor = new K.Circle(UI.DragAnchor);
+    layer.add(c);
+    c.setInPoint(anchor.getAbsolutePosition());
+    c.setOutPoint(anchor.getAbsolutePosition());
 
-    var dragAnchor = new K.Circle(UI.DragAnchor)
-    dragAnchor.setPosition(anchor.getAbsolutePosition())
-    layer.add(dragAnchor)
-    dragAnchor.setDraggable(true)
-    dragAnchor.startDrag()
-    dragAnchor.on('dragmove', function(evt) {
-      c.setInPoint(evt)
-      layer.draw()
-    })
-    dragAnchor.on('dragend', function(evt) {
-      dragAnchor.destroy()
-      c.remove()
-      addOrDestroyConnection(c) 
-      layer.draw()
-    })
+    dragAnchor.setPosition(anchor.getAbsolutePosition());
+    layer.add(dragAnchor);
+    dragAnchor.setDraggable(true);
+    dragAnchor.startDrag();
+    dragAnchor.on('dragmove', function (evt) {
+      c.setInPoint(evt);
+      layer.draw();
+    });
+    dragAnchor.on('dragend', function (evt) {
+      dragAnchor.destroy();
+      c.remove();
+      addOrDestroyConnection(c);
+      layer.draw();
+    });
   }
 
   /*
@@ -85,10 +88,10 @@ function(K,         UI,   C) {
    */
   return {
     anchorStart: anchorStart,
-    load:load,
-    addAndDragGate:addAndDrag,
-    getLayer: function(){ return layer},
-    setOnGateAdded: function(cb) { onGateAdded = cb },
-    setOnAddOrDestroyConnection: function(cb) { addOrDestroyConnection = cb },
-  } 
+    load: load,
+    addAndDragGate: addAndDrag,
+    getLayer: function () { return layer; },
+    setOnGateAdded: function (cb) { onGateAdded = cb; },
+    setOnAddOrDestroyConnection: function (cb) { addOrDestroyConnection = cb; }
+  };
 });

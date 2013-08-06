@@ -1,3 +1,6 @@
+/*global define*/
+"use strict";
+
 /*
  * Workspace is a singleton that exports some manipulator methods. The workspace
  * serves as a layer to store all of the gates that are in a project. It also 
@@ -7,7 +10,7 @@
  * state. E.g. no floating wires, deleting a gate should remove the connected
  * wires, etc..
  */
-define(["Kinetic"], function(K) {
+define(["Kinetic"], function (K) {
 
   //Kineticjs Layer that stores everything
   var layer;
@@ -15,9 +18,9 @@ define(["Kinetic"], function(K) {
   /*
    * Do any workspace initialization here. Presently it only creates the layer
    * object. In theory this might be handed a project to construct. 
-   */ 
+   */
   function load() {
-    layer = new K.Layer()
+    layer = new K.Layer();
   }
 
   /*
@@ -25,8 +28,8 @@ define(["Kinetic"], function(K) {
    * passed through here. 
    */
   function addGate(gate) {
-    layer.add(gate)
-    layer.draw()
+    layer.add(gate);
+    layer.draw();
   }
 
   /*
@@ -35,60 +38,62 @@ define(["Kinetic"], function(K) {
    * connection.
    */
   function addOrDestroyConnection(conn) {
-    var ANCHOR_RADIUS_SQUARED = 49;
+    var ANCHOR_RADIUS_SQUARED = 49,
 
     //Try to find an 'in' anchor to anchor the connections 'in' point to.
-    var pt = conn.getInPoint()
-    var x = pt[0]
-    var y = pt[1]    
-    var connectTo = undefined
-    layer.get(".in").each(function(f) {
-      var pt2 = f.getAbsolutePosition()
-      var dx = pt2.x-x
-      var dy = pt2.y-y
-      if(dx*dx+dy*dy <= ANCHOR_RADIUS_SQUARED){
-        connectTo = f
-      }
-    })
+      pt = conn.getInPoint(),
+      x = pt[0],
+      y = pt[1],
+      connectFrom,//undefined
+      connectTo; //undefined
 
-    if (connectTo == undefined) {
+    layer.get(".in").each(function (f) {
+      var pt2 = f.getAbsolutePosition(),
+        dx = pt2.x - x,
+        dy = pt2.y - y;
+
+      if (dx * dx + dy * dy <= ANCHOR_RADIUS_SQUARED) {
+        connectTo = f;
+      }
+    });
+
+    if (connectTo === undefined) {
       //Nothing connected, destroy and exit.
-      conn.destroy()
-      return
+      conn.destroy();
+      return;
     }
 
     //Try to find an 'out' anchor to connect to
-    pt = conn.getOutPoint()
-    x = pt[0]
-    y = pt[1]
-    var connectFrom = undefined
-    layer.get(".out").each(function(f) {
-      var pt2 = f.getAbsolutePosition()
-      var dx = pt2.x-x
-      var dy = pt2.y-y
-      if(dx*dx+dy*dy <= ANCHOR_RADIUS_SQUARED){
-        connectFrom = f
+    pt = conn.getOutPoint();
+    x = pt[0];
+    y = pt[1];
+    layer.get(".out").each(function (f) {
+      var pt2 = f.getAbsolutePosition(),
+        dx = pt2.x - x,
+        dy = pt2.y - y;
+      if (dx * dx + dy * dy <= ANCHOR_RADIUS_SQUARED) {
+        connectFrom = f;
       }
-    })
-    if (connectFrom == undefined) {
-      conn.destroy()
-      return 
+    });
+    if (connectFrom === undefined) {
+      conn.destroy();
+      return;
     }
 
     //Found both in an out. Attach the connection to those anchors.
-    conn.setOutAnchor(connectFrom)
-    conn.setToAnchor(connectTo)
-    layer.add(conn) 
-    layer.draw()
+    conn.setOutAnchor(connectFrom);
+    conn.setToAnchor(connectTo);
+    layer.add(conn);
+    layer.draw();
   }
 
   /*
    * Export any public functions
    */
   return {
-    load: load, 
-    getLayer: function() {return layer}, 
+    load: load,
+    getLayer: function () {return layer; },
     addGate: addGate,
     addOrDestroyConnection: addOrDestroyConnection
-  }
+  };
 });
