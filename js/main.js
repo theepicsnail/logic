@@ -6,7 +6,7 @@
  * off the loading process, and upon load complete, launches the app.
  */
 require.config({
-  vaseUrl: "/js"
+  baseUrl: "js"
 });
 
 require(["LoadingScreen", "Resources", "App"],

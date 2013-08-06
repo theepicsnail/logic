@@ -73,7 +73,7 @@ define(["Kinetic", "UI", "Resources", "Gate"],
       group.setDraggable(true);
       group.add(panel);
       //Start out on the right for the NOT gate
-      for (i = R.gates.length; i >= 0; i -= 1) {
+      for (i = 0; i < R.gates.length; i += 1) {
         //get x,y and set us up for the next iteration
         x = 12;
         y = 12 + 46 * row;
