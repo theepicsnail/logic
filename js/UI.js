@@ -47,5 +47,12 @@ define({
   Connection: {
     stroke: 'blue',
     strokeWidth: 2,
+  },
+  /*
+   *
+   */
+  Shape: {
+    stroke: 'black',
+    strokeWidth: 3,
   }
 });

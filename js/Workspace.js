@@ -10,7 +10,7 @@
  * state. E.g. no floating wires, deleting a gate should remove the connected
  * wires, etc..
  */
-define(["Kinetic"], function (K) {
+define(["Kinetic", "IC/Gate/And"], function (K, AND) {
 
   //Kineticjs Layer that stores everything
   var layer;
@@ -21,6 +21,7 @@ define(["Kinetic"], function (K) {
    */
   function load() {
     layer = new K.Layer();
+    addGate(new AND());
   }
 
   /*

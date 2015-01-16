@@ -10,7 +10,7 @@
  * dragging. That gate is picked up (dragging started). Then it is added to
  * the active layer, who deals with it from there.
  */
-define(["Kinetic", "UI", "Resources", "Gate"],
+define(["Kinetic", "UI", "Resources", "Gate", "IC/Button"],
   function (K,         UI,   R,           Gate) {
     var group, layer;
 

@@ -13,3 +13,13 @@ function removeA(arr) {
   return arr;
 }
 
+function extend(child, base) {
+  /*jslint forin: true*/
+  var key;
+  for (key in base.prototype) {
+    if (child.prototype[key] === undefined) {
+      child.prototype[key] = base.prototype[key];
+    }
+  }
+  return child;
+}
